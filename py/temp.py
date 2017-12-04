@@ -13,7 +13,7 @@ try:
  print "Trying...",device
  arduino = serial.Serial(device,9600)
 except:
- print "Failed to connect on",device
+ print "Failed to connect on",device    #尚未連結到裝置
 
 
 ##讀取資料，將資料傳送到資料庫指定欄位
@@ -21,10 +21,10 @@ except:
 data = arduino.readline()
 temp = float(data)
 var=1;
-while temp!=-127.0 :       
+while temp!=-127.0 :       #當溫度不等於-127.0
   print temp;
-  data = arduino.readline()
-  cursor.execute("INSERT INTO temperature(temperature) VALUES (%s)",temp)
+  data = arduino.readline()  #讀取資料
+  cursor.execute("INSERT INTO temperature(temperature) VALUES (%s)",temp) #新增至temp表單
   dbConn.commit()
   data = arduino.readline() 
   temp=float(data)  

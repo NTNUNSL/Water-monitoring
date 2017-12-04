@@ -23,14 +23,14 @@ data = arduino.readline()
 
 while data!=0 :
   
-    if(data[0]=='p'):
+    if(data[0]=='p'):               #當資料開頭為p的時候，就將pH value去掉
         ph = data.strip('pH value:')
-        cursor.execute("INSERT INTO ph(ph) VALUES (%s)",[ph])
+        cursor.execute("INSERT INTO ph(ph) VALUES (%s)",[ph]) #新增至ph表單
         data = arduino.readline()
         print ph
         if(data[0]=='o'):
-            orp = data.strip('orp value:')
-            cursor.execute("INSERT INTO orp(orp) VALUES (%s)",[orp])
+            orp = data.strip('orp value:')  #當資料開頭為Ｅ的時候，就將orp value去掉
+            cursor.execute("INSERT INTO orp(orp) VALUES (%s)",[orp]) #新增至orp表單
             dbConn.commit()
             print orp
     data = arduino.readline()   
