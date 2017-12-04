@@ -21,14 +21,14 @@ for(x in c(1:length(data$Car))){
 data$GROUP<-0
 for(x in c(1:length(data$Car))){
   if((data$Car[x]<40)){
-    data$GROUP[x]<-1
-  }
+    data$GROUP[x]<-1 
+  } #Car小於40時設為1
   else if((data$Car[x]>=40&&data$Car[x]<=50)){
     data$GROUP[x]<-2
-  }
+  }#Car大於等於40，小於等於50時設為2
   else{
     data$GROUP[x]<-3
-  }
+  }#其他皆設為3(>50)
 }
 
 #MARS(training)
@@ -37,9 +37,10 @@ library(earth);
 
 #輸入所要訓練的資料
 mars_data<-read.csv("/Users/millie/Desktop/水庫/testdata1.csv",header=TRUE,sep=",", fileEncoding = "big5")
-#設定名稱
+#設定訓練資料的名稱
 names(mars_data)<-c("Car","temp","pH","EC","TDS","GROUP")
-#training
+
+#MARS training (Car=temp+pH+EC+TDS)
 mars<-earth(Car~temp+pH+EC+TDS,data=mars_data)
 
 #進行與測試資料預測
@@ -61,33 +62,36 @@ plot(ecdf(new),xlim = c(0,0.30),ylim = c(0,1),col ="yellow")
 par(new = TRUE)
 abline(h = 0.8)
 
-pasummary(mars)
+#show predict Model data
+summary(mars)
 plot(mars)
 
-#45警報
+#設置Car為45警報，將測試資料及預測資料分成兩類，判斷準確度
+#測試資料
 data$GROUP1<-0
 for(x in c(1:length(data$Car))){
   if((data$Car[x]<45)){
     data$GROUP1[x]<-1
-  }
+  } #data<45時為1
   else if((data$Car[x]>=45)){
     data$GROUP1[x]<-2
-  }
+  } #data>=45為2
   
 }
-
+#系統預測的資料
 predict$GROUP1<-0
 for(x in c(1:length(predict$Car))){
   if((predict$Car[x]<45)){
     predict$GROUP1[x]<-1
-  }
+  } #data<45時為1
   else if((predict$Car[x]>=45)){
     predict$GROUP1[x]<-2
-  }
+  } #data>=45為2
   
 }
 
-#警報設置為45準確率
+#實際資料與預測資料的準確率
+
 count2<-0
 count3<-0
 for(x in c(1:length(data$GROUP1))){
