@@ -2,9 +2,12 @@
 import serial
 import MySQLdb
 
+##設定資料庫帳號密碼
 
 dbConn = MySQLdb.connect("140.122.184.221", "root", "imwang810412", "Sensors") or die("could not connect to database")
 cursor = dbConn.cursor()
+
+## Sensors輸入位置
 device = '/dev/ttyACM5'
 
 try:
@@ -13,6 +16,7 @@ try:
 except:
  print "Failed to connect on",device
 
+##讀取資料，當接收到資料時，將資料傳送到資料庫EC表單
 
 data = arduino.readline()
 while data!=0 :       
